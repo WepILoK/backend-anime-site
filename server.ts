@@ -17,8 +17,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 
-
-
+app.get('/users/:id', UserCtrl.show);
 app.post('/registration', registerValidations, UserCtrl.create)
 
 
