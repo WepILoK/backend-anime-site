@@ -16,7 +16,7 @@ export const registerValidations = [
             min: 6,
         })
         .withMessage('Минимальная длина пароля 6 символов')
-        .custom((value, { req }) => {
+        .custom((value, {req}) => {
             if (value !== req.body.password2) {
                 throw new Error('Пароли не совпадают');
             } else {
