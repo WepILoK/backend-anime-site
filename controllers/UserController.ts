@@ -72,21 +72,36 @@ class UserController {
     async afterLogin(req: express.Request, res: express.Response): Promise<void> {
         try {
             const user = req.user ? (req.user as IUserModelDocument).toJSON() : undefined;
-            res.json({
+            res.status(200).json({
                 status: 'success',
                 message: 'Авторизация прошла успешно',
                 data: {
                     ...user,
                     token: jwt.sign({ data: req.user }, process.env.KEY || '123', {
                         expiresIn: '30 days',
-                    }),
-                },
-            });
+                    })
+                }
+            })
         } catch (error) {
             res.status(500).json({
                 status: 'error',
                 message: error,
-            });
+            })
+        }
+    }
+    async getUserData(req: express.Request, res: express.Response): Promise<void> {
+        try {
+            const user = req.user ? (req.user as IUserModelDocument).toJSON() : undefined;
+            res.status(200).json({
+                status: 'success',
+                message: 'Авторизация прошла успешно',
+                data: user
+            })
+        } catch (error) {
+            res.status(500).json({
+                status: 'error',
+                message: error,
+            })
         }
     }
 }
