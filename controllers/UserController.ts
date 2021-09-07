@@ -1,5 +1,7 @@
 import express from 'express';
-import {UserModel} from "../models/UserModel";
+import jwt from 'jsonwebtoken';
+
+import {IUserModelDocument, UserModel} from "../models/UserModel";
 import {validationResult} from "express-validator";
 import {isValidObjectId} from "mongoose";
 import {generateMD5} from "../utils/generateMD5";
@@ -17,9 +19,9 @@ class UserController {
                 return
             }
             const {email, password, userName} = req.body
-            const candidateEmail = await UserModel.findOne({email})
-            const candidateUserName = await UserModel.findOne({userName})
-            if (candidateUserName || candidateEmail) {
+            const candidateEmail = await UserModel.findOne({ $or: [{ email }, { userName }] })
+
+            if (candidateEmail) {
                 res.status(400).json({
                     status: 'error',
                     message: 'Возможно ваша почта или логин уже используются'
@@ -59,6 +61,26 @@ class UserController {
             res.status(200).json({
                 status: 'success',
                 data: user,
+            });
+        } catch (error) {
+            res.status(500).json({
+                status: 'error',
+                message: error,
+            });
+        }
+    }
+    async afterLogin(req: express.Request, res: express.Response): Promise<void> {
+        try {
+            const user = req.user ? (req.user as IUserModelDocument).toJSON() : undefined;
+            res.json({
+                status: 'success',
+                message: 'Авторизация прошла успешно',
+                data: {
+                    ...user,
+                    token: jwt.sign({ data: req.user }, process.env.KEY || '123', {
+                        expiresIn: '30 days',
+                    }),
+                },
             });
         } catch (error) {
             res.status(500).json({

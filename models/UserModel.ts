@@ -39,7 +39,7 @@ const UserSchema = new Schema<IUserModel>(
         age: Number,
         country: String,
         city: String,
-        avatar: String,
+        avatar: {type: String, default: 'avatar.png'},
         vk: String,
         facebook: String,
         twitter: String,
