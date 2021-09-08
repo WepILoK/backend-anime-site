@@ -31,7 +31,10 @@ class UserController {
             const data = {
                 email: email,
                 userName: userName,
-                password: generateMD5(password + process.env.KEY)
+                password: generateMD5(password + process.env.KEY),
+                notifications: [],
+                chats: [],
+                friends: [],
             }
             const user = await UserModel.create(data)
             res.status(201).json({

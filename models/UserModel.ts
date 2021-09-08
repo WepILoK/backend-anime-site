@@ -14,6 +14,9 @@ export interface IUserModel {
     vk?: string
     facebook?: string
     twitter?: string
+    notifications: []
+    chats: []
+    friends: []
 }
 
 export type IUserModelDocument = IUserModel & Document;
@@ -43,6 +46,9 @@ const UserSchema = new Schema<IUserModel>(
         vk: String,
         facebook: String,
         twitter: String,
+        notifications: Array,
+        chats: Array,
+        friends: Array,
     }
 )
 
