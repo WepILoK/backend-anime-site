@@ -32,9 +32,6 @@ class UserController {
                 email: email,
                 userName: userName,
                 password: generateMD5(password + process.env.KEY),
-                notifications: [],
-                chats: [],
-                friends: [],
             }
             const user = await UserModel.create(data)
             res.status(201).json({
@@ -105,6 +102,45 @@ class UserController {
                 status: 'error',
                 message: error,
             })
+        }
+    }
+    async updateUserData(req: express.Request, res: express.Response): Promise<void> {
+        try {
+            const userId = req.params.id
+
+            if (!isValidObjectId(userId)) {
+                res.status(400).send()
+                return
+            }
+            const {name, surname, age, country, city, avatar, vk, facebook, twitter} = req.body;
+            const user = await UserModel.findById(userId).exec()
+
+            if (user) {
+                user.name = name ? name : user.name
+                user.surname = surname ? surname : user.surname
+                user.age = age ? age : user.age
+                user.country = country ? country : user.country
+                user.city = city ? city : user.city
+                user.avatar = avatar ? avatar : user.avatar
+                user.vk = vk ? vk : user.vk
+                user.facebook = facebook ? facebook : user.facebook
+                user.twitter = twitter ? twitter : user.twitter
+                await user.save();
+
+                res.status(201).json({
+                    status: 'success',
+                    message: 'Данные успешно обновлены',
+                    data: user
+                })
+            } else {
+                res.status(404).send();
+            }
+
+        } catch (error) {
+            res.status(500).json({
+                status: 'error',
+                message: error,
+            });
         }
     }
 }
