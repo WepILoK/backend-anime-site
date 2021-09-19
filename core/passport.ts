@@ -16,11 +16,12 @@ passport.deserializeUser((id, done) => {
         done(err, user)
     })
 })
+const selectParams = "+name +surname +age +country +city +vk +facebook +twitter +notifications +chats +friends"
 
 passport.use(new LocalStrategy({usernameField: "email"},
     async (email, password, done): Promise<void> => {
         try {
-            const user = await UserModel.findOne({email}).exec()
+            const user = await UserModel.findOne({email}).select(selectParams).exec()
             if (!user) {
                 return done(null, false)
             }
@@ -43,7 +44,7 @@ passport.use(
         },
         async (payload: { data: IUserModel }, done): Promise<void> => {
             try {
-                const user = await UserModel.findById(payload.data._id).exec()
+                const user = await UserModel.findById(payload.data._id).select(selectParams).exec()
                 if (user) {
                     return done(null, user)
                 }

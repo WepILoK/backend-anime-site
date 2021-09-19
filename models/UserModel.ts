@@ -37,18 +37,54 @@ const UserSchema = new Schema<IUserModel>(
             required: true,
             type: String,
         },
-        name: String,
-        surname: String,
-        age: Number,
-        country: String,
-        city: String,
-        avatar: {type: String, default: 'avatar.png'},
-        vk: String,
-        facebook: String,
-        twitter: String,
-        notifications: Array,
-        chats: Array,
-        friends: Array,
+        name: {
+            type: String,
+            select: false
+        },
+        surname: {
+            type: String,
+            select: false
+        },
+        age: {
+            type: Number,
+            select: false
+        },
+        country: {
+            type: String,
+            select: false
+        },
+        city: {
+            type: String,
+            select: false
+        },
+        avatar: {
+            type: String,
+            default: 'avatar.png'
+        },
+        vk: {
+            type: String,
+            select: false
+        },
+        facebook: {
+            type: String,
+            select: false
+        },
+        twitter: {
+            type: String,
+            select: false
+        },
+        notifications: {
+            type: Array,
+            select: false
+        },
+        chats: {
+            type: Array,
+            select: false
+        },
+        friends: {
+            type: Array,
+            select: false
+        },
     }
 )
 
