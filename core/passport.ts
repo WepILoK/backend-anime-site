@@ -16,7 +16,8 @@ passport.deserializeUser((id, done) => {
         done(err, user)
     })
 })
-const selectParams = "+name +surname +age +country +city +vk +facebook +twitter +notifications +chats +friends"
+
+const selectParams = "+notifications +chats +friends"
 
 passport.use(new LocalStrategy({usernameField: "email"},
     async (email, password, done): Promise<void> => {

@@ -12,7 +12,6 @@ import {passport} from "./core/passport";
 import {UserCtrl} from "./controllers/UserController";
 
 
-
 const app = express()
 const PORT = process.env.PORT || 8888
 
